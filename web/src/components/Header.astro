@@ -1,9 +1,13 @@
+---
+import CopyIcon from './icons/copy.astro';
+---
+
 <header class="max-w-4xl mx-auto flex items-center justify-center py-10 flex-col">
     <h1 class="font-semibold text-4xl text-blue-500 pt-4">Tailwind css animations</h1>
     <h2 class="font-medium opacity-70">A simple tailwind animation plugin</h2>
     <div id="copyNpmCode" class="mt-10 flex border border-blue-500 shadow-md shadow-blue-300 px-4 py-1 rounded-xl bg-gray-200 hover:bg-gray-300 hover:cursor-pointer transition">
         <code id="installCode">npm install @agomzlo11/tailwindcss-animations</code>
-        <img src="./copy.svg" alt="copy code" class="w-5 h-5 ml-1">
+		<CopyIcon style='w-5 h-5 ml-1'/>
     </div>
 </header>
 

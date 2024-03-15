@@ -1,6 +1,7 @@
 ---
 import theme from '../../../src/theme.js'
 import { createId } from '../utils.js';
+import CopyIcon from './icons/copy.astro'
 
 const { animationKey } = Astro.props
 const { animationDuration, animationDelay } = theme
@@ -44,7 +45,7 @@ const { animationDuration, animationDelay } = theme
             </span>
             <div id={createId(animationKey, 'copyClass')} class="flex justify-between border border-blue-500 px-2 py-1 rounded-xl bg-gray-200 hover:bg-gray-300 hover:cursor-pointer transition">
                 <h3 id={createId(animationKey, 'class')} class="group-hover/box:font-extrabold font-semibold text-xs opacity-80">animate-{animationKey}</h3>
-                <img src="./copy.svg" alt="copy code" class="w-4 h-4 ml-1">
+                <CopyIcon style='w-4 h-4 ml-1'/>
             </div>
         </div>
     </div>

@@ -1,4 +1,4 @@
-import animations from '../src/index.js'
+import animations from '@agomzlo11/tailwindcss-animations'
 import theme from '../src/theme.js'
 
 const { animation, animationDelay, animationDuration } = theme
