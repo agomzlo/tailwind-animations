@@ -1,0 +1,122 @@
+---
+import theme from '../../../src/theme.js'
+import { createId } from '../utils.js';
+
+const { animationKey } = Astro.props
+const { animationDuration, animationDelay } = theme
+---
+<article 
+    class="group/box col-span-1 border rounded border-blue-500 shadow-md shadow-blue-300 hover:border-2 
+        hover:scale-105 transition cursor-pointer" 
+    data-class={animationKey}
+>
+    <div class="w-full h-full grid grid-cols-3 p-2">
+        <div class="p-6 flex gap-4 items-center justify-center flex-col w-full h-full border border-gray-300 shadow-md shadow-gray-300">
+            <span
+                id={createId(animationKey, 'box')}
+                class="group-hover/box:bg-blue-500 w-16 h-16 bg-gray-400 rounded-md flex items-center justify-center"
+            ></span>
+        </div>
+        <div class="w-full h-full grid grid-rows-3 col-span-2 items-center p-2">
+            <span class="grid grid-cols-2 row-span-2 gap-2">
+                <div>
+                    <h3>Delay Time</h3>
+                    <select name="animation-delay" id={createId(animationKey, 'delay')} class="w-full border border-blue-500 rounded-md p-0.5">
+                        <option value="0" disabled selected>Select One...</option>
+                        {
+                            Object.entries(animationDelay).map(([key]) => (
+                                <option value={key}>{key}</option>
+                            ))
+                        }
+                    </select>
+                </div>
+                <div>
+                    <h3>Duration Time</h3>
+                    <select name="animation-duration" id={createId(animationKey, 'duration')} class="w-full border border-blue-500 rounded-md p-0.5">
+                        <option value="0" disabled selected>Select One...</option>
+                        {
+                            Object.entries(animationDuration).map(([key]) => (
+                                <option value={key}>{key}</option>
+                            ))
+                        }
+                    </select>
+                </div>
+            </span>
+            <div id={createId(animationKey, 'copyClass')} class="flex justify-between border border-blue-500 px-2 py-1 rounded-xl bg-gray-200 hover:bg-gray-300 hover:cursor-pointer transition">
+                <h3 id={createId(animationKey, 'class')} class="group-hover/box:font-extrabold font-semibold text-xs opacity-80">animate-{animationKey}</h3>
+                <img src="./copy.svg" alt="copy code" class="w-4 h-4 ml-1">
+            </div>
+        </div>
+    </div>
+</article>
+
+<script>
+    import { toast } from 'wc-toast'
+    import { createId } from '../utils.js';
+
+    let animationValues: { key: string, delay: number | string, duration: number | string }[] = [];
+	const $articles = document.querySelectorAll('article');
+
+	$articles.forEach(($article) =>{
+		const animationKey = $article.getAttribute('data-class') as string;
+        
+        animationValues.push({
+            key: animationKey,
+            delay: 0,
+            duration: 0
+        })
+
+		const animationClass = `animate-${animationKey}`;
+
+		if (animationKey === null) return;
+        const $animatedBox = document.querySelector(`#${createId(animationKey!, 'Box')}`);
+
+		$article.addEventListener('mouseenter', () => {
+			$animatedBox!.classList.add(animationClass);
+		});
+
+		$article.addEventListener('mouseleave', () => {
+			$animatedBox!.classList.remove(animationClass);
+		});
+
+        const $delay = document.querySelector(`#${createId(animationKey!, 'delay')}`) as HTMLSelectElement;
+        const $duration = document.querySelector(`#${createId(animationKey!, 'duration')}`) as HTMLSelectElement;
+        const $class = document.querySelector(`#${createId(animationKey!, 'class')}`) as HTMLHeadingElement;
+
+        $delay.addEventListener('change', (e) => {
+            const value = (e.target as HTMLSelectElement).value;
+            const prevValue = animationValues.find((item) => item.key === animationKey)!.delay;
+            if(prevValue === 0){
+                $animatedBox?.classList.add(`animate-delay-${value}`);
+                $class.innerText += ` animate-delay-${value}`;
+            } 
+            $class.innerText = $class.innerText.replace(`animate-delay-${prevValue}`, `animate-delay-${value}`);
+              
+            $animatedBox?.classList.replace(`animate-delay-${prevValue}`, `animate-delay-${value}`);
+            animationValues.find((item) => item.key === animationKey)!.delay = value;
+        });
+
+        $duration.addEventListener('change', (e) => {
+            const value = (e.target as HTMLSelectElement).value;
+            const prevValue = animationValues.find((item) => item.key === animationKey)?.duration;
+            if(prevValue === 0) {
+                $animatedBox?.classList.add(`animate-duration-${value}`);
+                $class.innerText += ` animate-duration-${value}`;
+            }
+            $class.innerText = $class.innerText.replace(`animate-duration-${prevValue}`, `animate-duration-${value}`);
+
+            $animatedBox?.classList.replace(`animate-duration-${prevValue}`, `animate-duration-${value}`);
+            animationValues.find((item) => item.key === animationKey)!.duration = value;
+        });
+
+        const $copyClass = document.querySelector(`#${createId(animationKey!, 'copyClass')}`);
+        
+        $copyClass!.addEventListener('click', () => {
+            const text = $class.textContent;
+            navigator.clipboard.writeText(text!);
+            toast('Copied to clipboard', { duration: 1500 });
+        })
+	})
+
+
+</script>
