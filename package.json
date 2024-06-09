@@ -1,6 +1,6 @@
 {
-  "name": "@agomzlo11/tailwindcss-animations",
-  "version": "0.0.3",
+  "name": "@agomzlodev/tailwindcss-animations",
+  "version": "0.0.1",
   "description": "Tailwind CSS plugin to add some animations to your project",
   "main": "./src/index.js",
   "type": "module",
@@ -8,7 +8,7 @@
     "test": "vitest"
   },
   "keywords": [],
-  "author": "Alejandro Gómez Zlobina",
+  "author": "Alejandro Gómez Zlobina (@agomzlodev)",
   "license": "ISC",
   "devDependencies": {
     "postcss": "8.4.35",

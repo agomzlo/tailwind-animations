@@ -16,7 +16,3 @@ export async function generatePluginCSS (options = {}) {
     })).process(`${TAILWIND_BASE} ${inline}`, { from: undefined })
     .then(result => result.css.trim())
 }
-
-const content = '<div class="animate-fade-in">Hello</div>'
-
-console.log(await generatePluginCSS({ content }))

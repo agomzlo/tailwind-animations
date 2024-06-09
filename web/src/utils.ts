@@ -1,4 +1,4 @@
-export function createId (stringToConvert: string, addToString: string = '') {
+export function createId (stringToConvert: string, addToString: string): string{
     const stringArray = stringToConvert.split('-')
     stringArray.push(addToString)
     stringArray.forEach((word, index) => {
@@ -12,19 +12,19 @@ export function createId (stringToConvert: string, addToString: string = '') {
     return stringArray.join('')
 }
 
-export const animationsCategories = {
-	'blur': [],
-    'bounce': [],
-    'contract': [],
-    'expand': [],
-	'fade': [],
-	'flip': [],
-    'roll': [],
-	'rotate': [],
-	'scale': [],
-    'skew': [],
-	'slide': [],
+export const animationsCategories: {[index: string]: string[]} = {
+	blur: [],
+    bounce: [],
+    contract: [],
+    expand: [],
+	fade: [],
+	flip: [],
+    roll: [],
+	rotate: [],
+	scale: [],
+    skew: [],
+	slide: [],
     'swing-drop': [],
-	'zoom': [],
-	'other': []
-    }
+	zoom: [],
+	other: []
+}
