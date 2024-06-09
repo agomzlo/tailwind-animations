@@ -1,0 +1,105 @@
+---
+import MoonIcon from "./icons/MoonIcon.astro";
+import SunIcon from "./icons/SunIcon.astro";
+import SystemIcon from "./icons/SystemIcon.astro";
+---
+<div id="themeSelector" class="relative cursor-pointer">
+    <span class="sr-only">Choose Theme</span>
+    <SunIcon id="light" class="theme-toggle-icon size-4 md:size-6 text-black hover:scale-105 dark:text-white" />
+    <MoonIcon id="dark" class="theme-toggle-icon size-4 md:size-6 absolute top-0 text-black hover:scale-105 dark:text-white" />
+    <SystemIcon id="system" class="theme-toggle-icon size-4 md:size-6 absolute top-0 text-black hover:scale-105 dark:text-white" />
+    <div id="themeMenu" class="absolute bg-white top-5 md:top-7 right-0 rounded-md dark:bg-gray-800 cursor-pointer hidden">
+        <span id="lightTheme" class="flex flex-row rounded-ss-md rounded-se-md items-center gap-2 py-1 px-2 hover:bg-gray-200 dark:hover:bg-gray-700">
+            <SunIcon class="w-4 h-4 text-black dark:text-white" />
+            Light
+        </span>
+        <span id="darkTheme" class="flex flex-row items-center gap-2 border-y border-gray-300 py-1 px-2 hover:bg-gray-200 dark:border-gray-700 dark:hover:bg-gray-700">
+            <MoonIcon class="w-4 h-4 text-black dark:text-white" />
+            Dark
+        </span>
+        <span id="systemTheme" class="flex flex-row rounded-es-md rounded-ee-md items-center gap-2 py-1 px-2 hover:bg-gray-200 dark:hover:bg-gray-700">
+            <SystemIcon class="w-4 h-4 text-black dark:text-white" />
+            System
+        </span>
+    </div>
+</div>
+
+<script>
+    const $themeSelector = document.getElementById('themeSelector') as HTMLDivElement;
+    const $themeMenu = document.getElementById('themeMenu') as HTMLDivElement;
+    const $lightTheme = document.getElementById('lightTheme') as HTMLDivElement;
+    const $darkTheme = document.getElementById('darkTheme') as HTMLDivElement;
+    const $systemTheme = document.getElementById('systemTheme') as HTMLDivElement;
+    const matchMedia = window.matchMedia("(prefers-color-scheme: dark)")
+    let remove: (() => void) | null = null
+
+    const getThemePreference = () => {
+        if (typeof localStorage !== "undefined") {
+            return localStorage.getItem("theme") ?? "system"
+        }
+
+        return window.matchMedia("(prefers-color-scheme: dark)").matches
+            ? "dark"
+            : "light"
+    }
+
+    const updateIcon = (themePreference: string) => {
+        document.querySelectorAll(".theme-toggle-icon").forEach((element) => {
+            (element as HTMLElement).style.scale = element.id === themePreference ? "1" : "0"
+        })
+    }
+
+    const updateTheme = () => {
+        if (remove != null) {
+            remove()
+        }
+        matchMedia.addEventListener("change", updateTheme)
+        remove = () => {
+            matchMedia.removeEventListener("change", updateTheme)
+        }
+
+        const themePreference = getThemePreference();
+        const isDark = themePreference === "dark" ||
+            (themePreference === "system" && matchMedia.matches)
+        
+        updateIcon(themePreference)
+        document.documentElement.classList[isDark ? "add" : "remove"]("dark")
+    }
+
+    updateTheme();
+
+    $themeSelector.addEventListener('click', () => {
+        $themeMenu.classList.toggle('hidden');
+    });
+
+    $lightTheme.addEventListener('click', () => {
+        localStorage.setItem('theme', 'light');
+        updateTheme();
+    });
+
+    $darkTheme.addEventListener('click', () => {
+        localStorage.setItem('theme', 'dark');
+        updateTheme();
+    });
+
+    $systemTheme.addEventListener('click', () => {
+        localStorage.setItem('theme', 'system');
+        updateTheme();
+    });
+
+    // const theme = (() => {
+	//   if (localStorage.getItem("theme") && localStorage.getItem("theme") !== "system") {
+	// 	return localStorage.getItem("theme");
+	//   }
+
+	//   if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+	// 	return "dark";
+	//   }
+
+	//   	return "light";
+	// })();
+
+	// document.documentElement.setAttribute("data-theme", theme!);
+	
+	// window.localStorage.setItem("theme", theme!);
+</script>

@@ -11,3 +11,20 @@ export function createId (stringToConvert: string, addToString: string = '') {
     })
     return stringArray.join('')
 }
+
+export const animationsCategories = {
+	'blur': [],
+    'bounce': [],
+    'contract': [],
+    'expand': [],
+	'fade': [],
+	'flip': [],
+    'roll': [],
+	'rotate': [],
+	'scale': [],
+    'skew': [],
+	'slide': [],
+    'swing-drop': [],
+	'zoom': [],
+	'other': []
+    }

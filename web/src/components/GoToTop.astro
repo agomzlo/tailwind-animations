@@ -1,0 +1,31 @@
+---
+import TopArrowIcon from "./icons/TopArrowIcon.astro";
+---
+<div class="absolute inset-4 flex flex-col items-end justify-end -z-[1]">
+    <span id="goToTop" class="animation-go-up w-fit h-fit p-4 bg-white border border-blue-500 rounded-full cursor-pointer transition-all hover:scale-110 dark:bg-gray-800">
+        <TopArrowIcon />
+    </span>
+</div>
+
+<style>
+    .animation-go-up {
+        animation: go-up 5s infinite;
+    }
+
+    @keyframes go-up {
+      0%, 10%, 20% { transform: translateY(0); }
+      5% { transform: translateY(-20px); }
+      15% { transform: translateY(-15px); }
+    }
+</style>
+
+<script>
+    const $goToTop = document.getElementById('goToTop') as HTMLElement;
+
+    $goToTop.addEventListener('click', () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+</script>

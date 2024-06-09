@@ -1,0 +1,40 @@
+---
+import { animationsCategories } from '../utils.ts';
+import GoToTop from '../components/GoToTop.astro';
+---
+<aside class="sticky top-0 w-full max-h-screen h-full hidden sm:block py-10">
+    <div class="w-full h-fit flex flex-col mt-20 p-4 gap-2 bg-white border border-blue-500 rounded-md dark:bg-slate-800">
+        <h2 class="text-2xl font-semibold border-b border-blue-500">Categories</h2>
+        <ul class="px-2 text-lg">
+            {
+                Object.keys(animationsCategories).map(animation => {
+                    return (
+                        <li class="w-fit text-xl capitalize font-semibold hover:scale-105">
+                            <a id={`${animation.toLowerCase()}Anchor`} data-onscreen="false" class="hover:underline hover:text-blue-500 data-[onscreen=true]:text-blue-500" href={`#${animation}`}>{animation.replace('-', ' ')}</a>
+                        </li>
+                    )
+                })
+            }
+        </ul>
+    </div>
+    <GoToTop />
+</aside>
+
+<script>
+    import { animationsCategories } from '../utils.ts';
+
+    onscroll = () => {
+        Object.keys(animationsCategories).forEach(category => {
+            const $category = document.getElementById(category.toLowerCase()) as HTMLElement;
+            const $categoryAnchor = document.getElementById(`${category.toLowerCase()}Anchor`) as HTMLAnchorElement;
+            const { innerHeight } = window;
+            const { top, bottom } = $category.getBoundingClientRect();
+
+            if (bottom > (innerHeight * 0.25) && top < (innerHeight * 0.25)) {
+                $categoryAnchor.dataset.onscreen = 'true';
+            } else {
+                $categoryAnchor.dataset.onscreen = 'false';
+            }
+        });
+    }
+</script>

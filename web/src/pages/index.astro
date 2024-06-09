@@ -1,25 +1,58 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import theme from '../../../src/theme.js';
-import Header from '../components/Header.astro';
 import Card from '../components/Card.astro';
+import { animationsCategories } from '../utils.ts';
 
 const { animation } = theme;
+const orderedAnimations = structuredClone(animationsCategories);
+
+Object.keys(animation).reduce((acc, key) => {
+	const [category, subcategory] = key.split('-');
+	const categoryName = `${category}-${subcategory}`;
+	acc[categoryName] ? acc[categoryName].push(key) : acc[category] ? acc[category].push(key) : acc['other'].push(key);
+	return acc;
+}, orderedAnimations);
 ---
-
 <Layout title="Tailwind CSS Animations Plugin">
-	<wc-toast></wc-toast>
-	<main class="pb-20">
-		<Header/>
-
-		<section class="max-w-5xl m-auto grid grid-cols-2 gap-4">
-			{
-				Object.keys(animation).map(animationKey => {
-					return (
-						<Card animationKey={animationKey}/>
-					)
-				})
-			}
-		</section>
-	</main>
+	<section class="col-span-4 flex flex-col gap-2">
+		{
+			Object.entries(orderedAnimations).map(([category, animations]) => {
+				return (
+					<div id={category} class="flex flex-col">
+						<h1 class="md:sticky top-3 animations-title w-full text-3xl font-semibold capitalize px-2 pt-4 mb-2 md:z-[2]">{category.replace('-', ' ')}</h1>
+						<div class="w-full grid grid-cols-1 md:[grid-template-columns:repeat(auto-fit,minmax(300px,400px))] gap-4">
+							{
+								animations.map(animationKey => {
+									return (
+										<Card animationKey={animationKey}/>
+									)
+								})
+							}
+						</div>
+					</div>
+				)
+			})
+		
+		}
+	</section>
 </Layout>
+
+<style>
+    .animations-title {
+        view-timeline-name: --animations-title;
+        view-timeline-axis: block;
+        animation-timeline: --animations-title;
+        animation-name: show;
+		animation-range: entry 25% cover 30%;
+    }
+
+    @keyframes show {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+</style>

@@ -1,0 +1,27 @@
+---
+import CopyIcon from '../components/icons/CopyIcon.astro';
+---
+<section class="w-fit md:max-w-4xl flex flex-col items-center justify-center py-4 md:py-10 px-4 gap-2">
+	<div class="flex flex-col gap-2 py-4">
+		<span class="font-bold text-lg">1. Install the dependency</span>
+		<div id="copyNpmCode" class="flex justify-between items-center border border-blue-500 px-2 py-1 rounded-lg bg-white cursor-pointer hover:shadow-md hover:shadow-blue-300 transition dark:bg-gray-800 dark:hover:shadow-blue-700">
+			<code id="installCode" class="select-none text-sm md:text-base">npm install @agomzlodev/tailwindcss-animations</code>
+			<CopyIcon class='w-5 h-5 ml-1'/>
+		</div>
+		<span class="font-bold text-lg">2. Add to tailwind configuration</span>
+		<img class="w-full max-h-48 rounded-lg" src="/tailwind-config.webp" alt="Tailwind configuration">
+	</div>
+</section>
+
+<script>
+	import { toast } from 'wc-toast'
+
+	const $copyNpmCode = document.querySelector('#copyNpmCode');
+
+	$copyNpmCode!.addEventListener('click', () => {
+		const code = document.querySelector('#installCode');
+		if (code === null) return;
+		navigator.clipboard.writeText(code.textContent ?? '');
+		toast('Copied to clipboard', { duration: 2000 });
+	})
+</script>
